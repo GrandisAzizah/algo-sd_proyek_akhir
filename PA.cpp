@@ -137,7 +137,6 @@ int main()
         case 10:
             edit_stok();
             break;
-            break;
         case 11:
             hapus_barang();
             break;
