@@ -4,30 +4,40 @@
 
 using namespace std;
 
+struct node {
+    string nama;
+    int harga;
+    int stok;
+    node *next;
+    node *prev;
+}
+
 int menu;     // variabel untuk memilih menu di beranda dan fungsi lihat_daftar
 char pilihan; // variabel pilihan untuk operasi do-while apakah ingin melanjutkan program atau tidak
 
 void beranda()
 {
-    // HEADER jj
+    // HEADER 
     cout << setfill('=') << setw(50) << "" << endl;
     cout << setfill(' ') << setw(20) << "" << "TOKO PIGURA" << endl;
-    cout << setfill('=') << setw(50) << "" << endl
-         << endl;
+    cout << setfill('=') << setw(50) << "" << endl;
 
     // PILIHAN MENU MANAJEMEN TOKO
     cout << "Menu:" << endl;
-    cout << "1. Input Baru" << endl;
-    cout << "2. Tampilkan daftar barang berdasarkan nama secara ascending" << endl;
-    cout << "3. Tampilkan daftar barang berdasarkan nama secara descending" << endl;
-    cout << "4. Tampilkan daftar barang berdasarkan harga secara ascending" << endl;
-    cout << "5. Tampilkan daftar barang berdasarkan harga secara descending" << endl;
-    cout << "6. Tampilkan daftar barang berdasarkan stok secara ascending" << endl;
-    cout << "7. Tampilkan daftar barang berdasarkan stok secara descending" << endl;
-    cout << "8. Edit nama produk di daftar barang" << endl;
-    cout << "9. Edit harga produk di daftar barang" << endl;
-    cout << "10. Edit stok produk di daftar barang" << endl;
-    cout << "11. Hapus produk dari daftar barang" << endl;
+    cout << "1. Input Baru" << endl; // file
+    cout << "2. Tampilkan daftar barang berdasarkan nama secara ascending." << endl; // bubble sort
+    cout << "3. Tampilkan daftar barang berdasarkan nama secara descending." << endl; // quick sort
+    cout << "4. Tampilkan daftar barang berdasarkan harga secara ascending." << endl; // quick sort
+    cout << "5. Tampilkan daftar barang berdasarkan harga secara descending." << endl; // bubble sort
+    cout << "6. Tampilkan daftar barang berdasarkan stok secara ascending." << endl; // bubble sort
+    cout << "7. Tampilkan daftar barang berdasarkan stok secara descending." << endl; // quick sort
+    cout << "8. Cari produk berdasarkan nama." << endl; // sequence/linear search
+    cout << "9. Cari produk berdasarkan harga." << endl; // binary search
+    cout << "10. Cari prodk berdasarkan stok." << endl; // binary search
+    cout << "11. Edit nama produk di daftar barang" << endl; //
+    cout << "12. Edit harga produk di daftar barang" << endl; //
+    cout << "13. Edit stok produk di daftar barang" << endl; // 
+    cout << "14. Hapus produk dari daftar barang" << endl; // 
     cout << "Pilih menu: ";
     cin >> menu;
 }
@@ -94,6 +104,12 @@ void edit_stok()
 {
 }
 
+void cari_nama(){}
+
+void cari_harga(){}
+
+void cari_stok(){}
+
 void lihat_daftar()
 {
 }
@@ -128,20 +144,26 @@ int main()
         case 7:
             stok_desc();
             break;
-        case 8:
-            edit_nama_produk();
+        case 8: cari_nama();
             break;
-        case 9:
-            edit_harga();
+        case 9: cari_harga();
             break;
-        case 10:
-            edit_stok();
+        case 10: cari_stok();
             break;
         case 11:
+            edit_nama_produk();
+            break;
+        case 12:
+            edit_harga();
+            break;
+        case 13:
+            edit_stok();
+            break;
+        case 14:
             hapus_barang();
             break;
         default:
-            cout << "Pilihan tidak tersedia. Pastikan Anda memilih menu 1 sd 4.";
+            cout << "Pilihan tidak tersedia. Pastikan Anda memilih menu 1-4.";
             break;
         }
         cout << "Apakah Anda ingin melanjutkan program? (y/n) -> ";
