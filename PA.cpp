@@ -9,7 +9,7 @@ char pilihan; // variabel pilihan untuk operasi do-while apakah ingin melanjutka
 
 void beranda()
 {
-    // HEADER
+    // HEADER jj
     cout << setfill('=') << setw(50) << "" << endl;
     cout << setfill(' ') << setw(20) << "" << "TOKO PIGURA" << endl;
     cout << setfill('=') << setw(50) << "" << endl
