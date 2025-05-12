@@ -12,6 +12,9 @@ struct node {
     node *prev;
 }
 
+node *head = nullptr;
+node *tail = nullptr;
+
 int menu;     // variabel untuk memilih menu di beranda dan fungsi lihat_daftar
 char pilihan; // variabel pilihan untuk operasi do-while apakah ingin melanjutkan program atau tidak
 
