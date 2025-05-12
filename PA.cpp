@@ -18,7 +18,7 @@ node *tail = nullptr;
 
 int menu;     // variabel untuk memilih menu di beranda dan fungsi lihat_daftar
 char pilihan; // variabel pilihan untuk operasi do-while apakah ingin melanjutkan program atau tidak
-int jml_input;
+int jml_input; // jmulah input di menu input_baru
 
 void beranda()
 {
@@ -29,24 +29,25 @@ void beranda()
 
     // PILIHAN MENU MANAJEMEN TOKO
     cout << "Menu:" << endl;
-    cout << "1. Input Baru" << endl;                                                   // file
+    cout << "1. Input Baru" << endl; // file
     cout << "2. Tampilkan daftar barang berdasarkan nama secara ascending." << endl;   // bubble sort
     cout << "3. Tampilkan daftar barang berdasarkan nama secara descending." << endl;  // quick sort
     cout << "4. Tampilkan daftar barang berdasarkan harga secara ascending." << endl;  // quick sort
     cout << "5. Tampilkan daftar barang berdasarkan harga secara descending." << endl; // bubble sort
     cout << "6. Tampilkan daftar barang berdasarkan stok secara ascending." << endl;   // bubble sort
     cout << "7. Tampilkan daftar barang berdasarkan stok secara descending." << endl;  // quick sort
-    cout << "8. Cari produk berdasarkan nama." << endl;                                // sequence/linear search
-    cout << "9. Cari produk berdasarkan harga." << endl;                               // binary search
-    cout << "10. Cari prodk berdasarkan stok." << endl;                                // binary search
-    cout << "11. Edit nama produk di daftar barang" << endl;                           //
-    cout << "12. Edit harga produk di daftar barang" << endl;                          //
-    cout << "13. Edit stok produk di daftar barang" << endl;                           //
-    cout << "14. Hapus produk dari daftar barang" << endl;                             //
+    cout << "8. Cari produk berdasarkan nama." << endl; // sequence/linear search
+    cout << "9. Cari produk berdasarkan harga." << endl; // binary search
+    cout << "10. Cari prodk berdasarkan stok." << endl; // binary search
+    cout << "11. Edit nama produk di daftar barang" << endl; //
+    cout << "12. Edit harga produk di daftar barang" << endl; //
+    cout << "13. Edit stok produk di daftar barang" << endl;  //
+    cout << "14. Hapus produk dari daftar barang" << endl;  //
     cout << "Pilih menu: ";
     cin >> menu;
 }
 
+// 1. Input Baru
 void input_baru()
 {
     FILE *file = fopen("databarang.txt", "a");
@@ -103,59 +104,90 @@ void input_baru()
     fclose(file);
 }
 
-void edit_daftar()
-{
-}
-
-void hapus_barang()
-{
-}
-
-void harga_asc()
-{
-}
-
-void harga_desc()
-{
-}
-
+// 2. Tampilkan daftar barang berdasarkan nama secara ascending.
 void nama_produk_asc()
 {
 }
 
+// 3. Tampilkan daftar barang berdasarkan nama secara descending.
 void nama_produk_desc()
 {
+    // menampilkan daftar barang berdasarkan nama secara desc
+    FILE *file = fopen("databarang.txt", "a");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return;
+    }
+    fclose(file);
 }
 
+// 4. Tampilkan daftar barang berdasarkan harga secara ascending.
+void harga_asc(){}
+
+// 5. Tampilkan daftar barang berdasarkan harga secara descending.
+void harga_desc(){}
+
+// 6. Tampilkan daftar barang berdasarkan stok secara ascending.
 void stok_asc()
 {
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Masukkan data ke-" << i + 1 << " : ";
+        cin >> my_array[i];
+    }
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (my_array[j] > my_array[j + 1])
+            {
+                // swap my_array[j] dan my_array[j + 1]
+                int temp = my_array[j];
+                my_array[j] = my_array[j + 1];
+                my_array[j + 1] = temp;
+            }
+        }
+    }
+
+    // Output the sorted array
+    cout << "Sorted array: ";
+    for (int i = 0; i < n; i++)
+    {
+        cout << my_array[i] << " ";
+    }
+    cout << endl;
 }
 
-void stok_desc()
-{
-}
+// 7. Tampilkan daftar barang berdasarkan stok secara descending.
+void stok_desc(){}
 
-void edit_nama_produk()
-{
-}
-
-void edit_harga()
-{
-}
-
-void edit_stok()
-{
-}
-
+// 8. Cari produk berdasarkan nama
 void cari_nama() {}
 
+// 9. Cari produk berdasarkan harga
 void cari_harga() {}
 
+// 10. Cari produk berdasarkan stok
 void cari_stok() {}
 
-void lihat_daftar()
-{
-}
+// 11. Edit nama produk di daftar barang
+void edit_nama_produk(){}
+
+// 12. Edit harga produk di daftar barang
+void edit_harga(){}
+
+// 13. Edit stok produk di daftar barang
+void edit_stok(){}
+
+// 14. Hapus produk dari daftar barang
+void hapus_barang(){}
+
+// lihat daftar
+void lihat_daftar(){}
 
 int main()
 {
