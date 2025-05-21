@@ -47,7 +47,7 @@ void beranda()
     cin >> menu;
 }
 
-// untuk normalisasi input jadi case insensitive
+// untuk normalisasi input jadi case insensitive buat pencarian
 string to_lowercase(string str)
 {
     for (int i = 0; str[i] != '\0'; i++)
