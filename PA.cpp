@@ -133,33 +133,85 @@ void harga_desc(){}
 // 6. Tampilkan daftar barang berdasarkan stok secara ascending.
 void stok_asc()
 {
-    for (int i = 0; i < n; i++)
+    FILE *file = fopen("databarang.txt", "r");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
     {
-        cout << "Masukkan data ke-" << i + 1 << " : ";
-        cin >> my_array[i];
+        cout << "Gagal membuka file." << endl;
+        return;
     }
 
-    for (int i = 0; i < n - 1; i++)
+    // menyimpan isi file sementara untuk parsing
+    char buff[255];
+    char tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    cout << endl;
+
+    while (fgets(buff, sizeof(buff), file))
     {
-        for (int j = 0; j < n - i - 1; j++)
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
         {
-            if (my_array[j] > my_array[j + 1])
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            // skip line kosong
+            fgets(buff, sizeof(buff), file);
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = nullptr;
+            newNode->prev = nullptr;
+
+            if (head == nullptr)
             {
-                // swap my_array[j] dan my_array[j + 1]
-                int temp = my_array[j];
-                my_array[j] = my_array[j + 1];
-                my_array[j + 1] = temp;
+                head = tail = newNode;
+            }
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
             }
         }
     }
+    fclose(file);
 
-    // Output the sorted array
-    cout << "Sorted array: ";
-    for (int i = 0; i < n; i++)
+    // bubble sort stok asc
+    bool swapped;
+
+    do
     {
-        cout << my_array[i] << " ";
+        swapped = false;
+        node *current = head;
+
+        while (current != nullptr && current->next != nullptr)
+        {
+            if (current->stok > current->next->stok)
+            {
+                swap(current->nama, current->next->nama);
+                swap(current->harga, current->next->harga);
+                swap(current->stok, current->next->stok);
+                swapped = true;
+            }
+            current = current->next;
+        }
+    } while (swapped);
+
+    // tampilkan hasil
+    node *temp = head;
+    cout << "Daftar barang stok asc: " << endl;
+    while (temp != nullptr)
+    {
+        cout << "Nama Produk: " << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
+        temp = temp->next;
+        cout << endl;
     }
-    cout << endl;
 }
 
 // 7. Tampilkan daftar barang berdasarkan stok secara descending.
