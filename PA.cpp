@@ -47,6 +47,19 @@ void beranda()
     cin >> menu;
 }
 
+// untuk normalisasi input jadi case insensitive
+string to_lowercase(string str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (str[i] >= 'A' && str[i] <= 'Z')
+        {
+            str[i] = str[i] + 'a' - 'A';
+        }
+    }
+    return str;
+}
+
 // 1. Input Baru
 void input_baru()
 {
@@ -218,7 +231,81 @@ void stok_asc()
 void stok_desc(){}
 
 // 8. Cari produk berdasarkan nama
-void cari_nama() {}
+void cari_nama() {
+    string cari;
+    FILE *file = fopen("databarang.txt", "r");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return;
+    }
+
+    cin.ignore();
+    cout << "Masukkan produk yang ingin dicari: ";
+    getline(cin, cari);
+
+    // menyimpan isi file sementara untuk parsing
+    char buff[255];
+    char tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    cout << endl;
+    head = tail = nullptr;
+
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            // skip line kosong
+            fgets(buff, sizeof(buff), file);
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = nullptr;
+            newNode->prev = nullptr;
+
+            if (head == nullptr)
+            {
+                head = tail = newNode;
+            }
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+    fclose(file);
+
+    bool found = false;
+    node *current = head;
+
+    while (current != nullptr)
+    {
+        if (to_lowercase(current->nama) == to_lowercase(cari))
+        {
+            cout << "Nama Produk: " << current->nama << "\tHarga Produk: " << current->harga << "\tStok Produk: " << current->stok;
+            cout << endl;
+            found = true;
+        }
+        current = current->next;
+    }
+
+    if (!found)
+    {
+        cout << "Data tidak ditemukan." << endl;
+    }
+}
 
 // 9. Cari produk berdasarkan harga
 void cari_harga() {}
