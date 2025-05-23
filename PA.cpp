@@ -901,7 +901,7 @@ fclose(file);
         if (bantu->nama == target)
         {
             cout << "Stok terkini: " << bantu->stok << endl;
-            // found = true;
+            found = true;
             cout << "Masukkan stok terbaru: ";
             cin >> stokbaru;
             bantu->stok = stokbaru;
