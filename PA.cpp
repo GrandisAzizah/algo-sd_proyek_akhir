@@ -63,7 +63,7 @@ string to_lowercase(string str)
 }
 
 // convert linked list ke array sebelum pake binary search buat pencarian
-void converstListToArray(node *head, node *nodeArr[], int &x)
+void convertListToArray(node *head, node *nodeArr[], int &x)
 {
     x = 0;
     node *current = head;
@@ -303,8 +303,6 @@ node *nama_produk_desc(node *head)
 
     convertListToArray(head, nodeArr, x);
     quicksort(nodeArr, 0, x - 1);
-    // node *tails = getTail(head);
-    // quicksortHelper(head, tail);
 
     head = nodeArr[0];
     head->prev = nullptr;
@@ -386,8 +384,6 @@ node *harga_asc(node *head)
 
     convertListToArray(head, nodeArr, x);
     quicksort(nodeArr, 0, x - 1);
-    // node *tails = getTail(head);
-    // quicksortHelper(head, tail);
 
     head = nodeArr[0];
     head->prev = nullptr;
@@ -1195,10 +1191,10 @@ int main()
             nama_produk_asc();
             break;
         case 3:
-            nama_produk_desc();
+            head = nama_produk_desc(head);
             break;
         case 4:
-            harga_asc();
+            harga_asc(head);
             break;
         case 5:
             harga_desc();
