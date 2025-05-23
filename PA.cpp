@@ -274,6 +274,34 @@ void quicksortHarga(node *nodeArr[], int low, int high)
     }
 }
 
+int partitionStok(node *nodeArr[], int low, int high)
+{
+    node *pivot = nodeArr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (nodeArr[j]->stok > pivot->stok)
+        {
+            i++;
+            swap(nodeArr[i], nodeArr[j]);
+        }
+    }
+
+    swap(nodeArr[i + 1], nodeArr[high]);
+    return i + 1;
+}
+
+void quicksortStok(node *nodeArr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pivotIndex = partitionStok(nodeArr, low, high);
+        quicksortStok(nodeArr, low, pivotIndex - 1);
+        quicksortStok(nodeArr, pivotIndex + 1, high);
+    }
+}
+
 // 3. Tampilkan daftar barang berdasarkan nama secara descending. 45 quicksort
 node *nama_produk_desc(node *head)
 {
@@ -605,7 +633,83 @@ void stok_asc()
 }
 
 // 7. Tampilkan daftar barang berdasarkan stok secara descending.
-void stok_desc() {}
+node *stok_desc(node *head) 
+{
+     FILE *file = fopen("databarang.txt", "r");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return nullptr;
+    }
+
+    // menyimpan isi file sementara untuk parsing
+    char buff[255];
+    char tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    cout << endl;
+
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            // skip line kosong
+            fgets(buff, sizeof(buff), file);
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = nullptr;
+            newNode->prev = nullptr;
+
+            if (head == nullptr)
+            {
+                head = tail = newNode;
+            }
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+    fclose(file);
+
+    convertListToArray(head, nodeArr, x);
+    quicksortStok(nodeArr, 0, x - 1);
+
+    head = nodeArr[0];
+    head->prev = nullptr;
+
+    for (int i = 0; i < x - 1; i++)
+    {
+        nodeArr[i]->next = nodeArr[i + 1];
+        nodeArr[i + 1]->prev = nodeArr[i];
+    }
+
+    nodeArr[x - 1]->next = nullptr;
+    tail = nodeArr[x - 1];
+
+    // tampilkan hasil
+    node *temp = head;
+    cout << "Daftar barang stok desc: " << endl;
+    while (temp != nullptr)
+    {
+        cout << "Nama Produk: " << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
+        temp = temp->next;
+        cout << endl;
+    }
+
+    return head;
 
 // 8. Cari produk berdasarkan nama 45
 void cari_nama()
@@ -686,7 +790,106 @@ void cari_nama()
 }
 
 // 9. Cari produk berdasarkan harga
-void cari_harga() {}
+void cari_harga() 
+{int cari;
+    FILE *file = fopen("databarang.txt", "r");
+
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return;
+    }
+
+    cout << "Masukkan harga produk yang ingin dicari: ";
+    cin >> cari;
+
+    // parsing file ke linked list
+    char buff[255], tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    head = tail = nullptr;
+
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+            fgets(buff, sizeof(buff), file); // skip kosong
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = newNode->prev = nullptr;
+
+            if (head == nullptr)
+                head = tail = newNode;
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+    fclose(file);
+
+    // urutkan data secara ascending berdasarkan harga (bubble sort)
+    bool swapped;
+    node *curr;
+    do
+    {
+        swapped = false;
+        curr = head;
+        while (curr != nullptr && curr->next != nullptr)
+        {
+            if (curr->harga > curr->next->harga)
+            {
+                swap(curr->nama, curr->next->nama);
+                swap(curr->harga, curr->next->harga);
+                swap(curr->stok, curr->next->stok);
+                swapped = true;
+            }
+            curr = curr->next;
+        }
+    } while (swapped);
+
+    // convert linked list ke array untuk binary search
+    convertListToArray(head, nodeArr, x);
+
+    // Binary Search
+    int low = 0, high = x - 1, mid;
+    bool found = false;
+
+    while (low <= high)
+    {
+        mid = (low + high) / 2;
+        if (nodeArr[mid]->harga == cari)
+        {
+            found = true;
+            break;
+        }
+        else if (cari < nodeArr[mid]->harga)
+            high = mid - 1;
+        else
+            low = mid + 1;
+    }
+
+    if (found)
+    {
+        cout << "Produk ditemukan:\n";
+        cout << "Nama Produk: " << nodeArr[mid]->nama
+             << "\tHarga: " << nodeArr[mid]->harga
+             << "\tStok: " << nodeArr[mid]->stok << endl;
+    }
+    else
+    {
+        cout << "Produk dengan harga tersebut tidak ditemukan.\n";
+    }
+    
+}
 
 // convert linked list ke array sebelum pake binary search buat pencarian
 void converstListToArray(node *head, node *nodeArr[], int &x)
@@ -1197,8 +1400,6 @@ void hapus_barang()
     fclose(file);
 }
 
-// lihat daftar
-void lihat_daftar() {}
 
 int main()
 {
