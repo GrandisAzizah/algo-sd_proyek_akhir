@@ -62,6 +62,19 @@ string to_lowercase(string str)
     return str;
 }
 
+// convert linked list ke array sebelum pake binary search buat pencarian
+void converstListToArray(node *head, node *nodeArr[], int &x)
+{
+    x = 0;
+    node *current = head;
+
+    while (current != nullptr)
+    {
+        nodeArr[x++] = current;
+        current = current->next;
+    }
+}
+
 // 1. Input Baru
 void input_baru()
 {
@@ -205,62 +218,38 @@ void nama_produk_asc()
     }
 }
 
-// 3. Tampilkan daftar barang berdasarkan nama secara descending. 45
-void nama_produk_desc()
+// partition untuk quicksort
+int partition(node *nodeArr[], int low, int high)
 {
-    FILE *file = fopen("databarang.txt", "r");
+    node *pivot = nodeArr[high];
+    int i = low - 1;
 
-    // cek apakah file bisa dibuka atau NULL
-    if (file == NULL)
+    for (int j = low; j < high; j++)
     {
-        cout << "Gagal membuka file." << endl;
-        return;
-    }
-
-    // menyimpan isi file sementara untuk parsing
-    char buff[255];
-    char tempNama[255];
-    int tempHarga = 0, tempStok = 0;
-    cout << endl;
-    head = tail = nullptr;
-
-    while (fgets(buff, sizeof(buff), file))
-    {
-        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        if (nodeArr[j]->nama > pivot->nama)
         {
-            fgets(buff, sizeof(buff), file);
-            sscanf(buff, "Harga Produk: %d", &tempHarga);
-
-            fgets(buff, sizeof(buff), file);
-            sscanf(buff, "Stok Produk: %d", &tempStok);
-
-            // skip line kosong
-            fgets(buff, sizeof(buff), file);
-
-            node *newNode = new node;
-            newNode->nama = tempNama;
-            newNode->harga = tempHarga;
-            newNode->stok = tempStok;
-            newNode->next = nullptr;
-            newNode->prev = nullptr;
-
-            if (head == nullptr)
-            {
-                head = tail = newNode;
-            }
-            else
-            {
-                tail->next = newNode;
-                newNode->prev = tail;
-                tail = newNode;
-            }
+            i++;
+            swap(nodeArr[i], nodeArr[j]);
         }
     }
-    fclose(file);
+
+    swap(nodeArr[i + 1], nodeArr[high]);
+    return i + 1;
 }
 
-// 4. Tampilkan daftar barang berdasarkan harga secara ascending. 45
-void harga_asc()
+// quicksort
+void quicksort(node *nodeArr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pivotIndex = partition(nodeArr, low, high);
+        quicksort(nodeArr, low, pivotIndex - 1);
+        quicksort(nodeArr, pivotIndex + 1, high);
+    }
+}
+
+// 3. Tampilkan daftar barang berdasarkan nama secara descending. 45
+node *nama_produk_desc(node *head)
 {
     FILE *file = fopen("databarang.txt", "r");
 
@@ -268,7 +257,90 @@ void harga_asc()
     if (file == NULL)
     {
         cout << "Gagal membuka file." << endl;
-        return;
+        return nullptr;
+    }
+
+    // menyimpan isi file sementara untuk parsing
+    char buff[255];
+    char tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    cout << endl;
+    // head = tail = nullptr;
+
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            // skip line kosong
+            fgets(buff, sizeof(buff), file);
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = nullptr;
+            newNode->prev = nullptr;
+
+            if (head == nullptr)
+            {
+                head = tail = newNode;
+            }
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+    fclose(file);
+
+    convertListToArray(head, nodeArr, x);
+    quicksort(nodeArr, 0, x - 1);
+    // node *tails = getTail(head);
+    // quicksortHelper(head, tail);
+
+    head = nodeArr[0];
+    head->prev = nullptr;
+
+    for (int i = 0; i < x - 1; i++)
+    {
+        nodeArr[i]->next = nodeArr[i + 1];
+        nodeArr[i + 1]->prev = nodeArr[i];
+    }
+
+    nodeArr[x - 1]->next = nullptr;
+    tail = nodeArr[x - 1];
+
+    // tampilkan hasil
+    node *temp = head;
+    cout << "Daftar barang stok desc: " << endl;
+    while (temp != nullptr)
+    {
+        cout << "Nama Produk: " << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
+        temp = temp->next;
+        cout << endl;
+    }
+
+    return head;
+}
+
+// 4. Tampilkan daftar barang berdasarkan harga secara ascending. 45 quicksort
+node *harga_asc(node *head)
+{
+    FILE *file = fopen("databarang.txt", "r");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return nullptr;
     }
 
     // menyimpan isi file sementara untuk parsing
@@ -311,6 +383,35 @@ void harga_asc()
         }
     }
     fclose(file);
+
+    convertListToArray(head, nodeArr, x);
+    quicksort(nodeArr, 0, x - 1);
+    // node *tails = getTail(head);
+    // quicksortHelper(head, tail);
+
+    head = nodeArr[0];
+    head->prev = nullptr;
+
+    for (int i = 0; i < x - 1; i++)
+    {
+        nodeArr[i]->next = nodeArr[i + 1];
+        nodeArr[i + 1]->prev = nodeArr[i];
+    }
+
+    nodeArr[x - 1]->next = nullptr;
+    tail = nodeArr[x - 1];
+
+    // tampilkan hasil
+    node *temp = head;
+    cout << "Daftar barang stok desc: " << endl;
+    while (temp != nullptr)
+    {
+        cout << "Nama Produk: " << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
+        temp = temp->next;
+        cout << endl;
+    }
+
+    return head;
 }
 
 // 5. Tampilkan daftar barang berdasarkan harga secara descending.
@@ -783,7 +884,9 @@ fclose(file);
 // 12. Edit harga produk di daftar barang 45
 void edit_harga()
 {
-    int cari;
+   string cari;
+    int hargaBaru;
+    bool found = false;
     FILE *file = fopen("databarang.txt", "r");
 
     // cek apakah file bisa dibuka atau NULL
@@ -792,10 +895,6 @@ void edit_harga()
         cout << "Gagal membuka file." << endl;
         return;
     }
-
-    cin.ignore();
-    cout << "Masukkan produk yang ingin dicari: ";
-    cin >> cari;
 
     // menyimpan isi file sementara untuk parsing
     char buff[255];
@@ -835,6 +934,44 @@ void edit_harga()
                 tail = newNode;
             }
         }
+    }
+    fclose(file);
+
+    node *current = head;
+
+    cin.ignore();
+    cout << "Masukkan nama produk yang ingin diedit harganya: ";
+    getline(cin, cari);
+
+    while (current != nullptr)
+    {
+        if (current->nama == cari)
+        {
+            cout << "Harga saat ini: " << current->harga << endl;
+            cout << "Masukkan harga terbaru: ";
+            cin >> hargaBaru;
+            current->harga = hargaBaru;
+            cout << "Harga berhasil diubah" << endl;
+            found = true;
+        }
+        current = current->next;
+    }
+
+    if (!found)
+    {
+        cout << "Data tidak ditemukan." << endl;
+    }
+
+    // tulis kembali file nya
+    file = fopen("databarang.txt", "w");
+    node *temp = head;
+
+    while (temp != nullptr)
+    {
+        fprintf(file, "Nama Produk: %s\n", temp->nama.c_str());
+        fprintf(file, "Harga Produk: %d\n", temp->harga);
+        fprintf(file, "Stok Produk: %d\n\n", temp->stok);
+        temp = temp->next;
     }
     fclose(file);
 }
