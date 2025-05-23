@@ -122,6 +122,87 @@ void input_baru()
 // 2. Tampilkan daftar barang berdasarkan nama secara ascending.
 void nama_produk_asc()
 {
+    FILE *file = fopen("databarang.txt", "r");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return;
+    }
+
+    // membaca isi file ke dalam linked list
+    char buff[255];
+    char tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    head = tail = nullptr;
+
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            // skip line kosong
+            fgets(buff, sizeof(buff), file);
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = nullptr;
+            newNode->prev = nullptr;
+
+            if (head == nullptr)
+            {
+                head = tail = newNode;
+            }
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+    fclose(file);
+
+    // bubble sort berdasarkan nama secara ascending
+    bool swapped;
+    node *current;
+
+    do
+    {
+        swapped = false;
+        current = head;
+
+        while (current != nullptr && current->next != nullptr)
+        {
+            if (current->nama > current->next->nama)
+            {
+                swap(current->nama, current->next->nama);
+                swap(current->harga, current->next->harga);
+                swap(current->stok, current->next->stok);
+                swapped = true;
+            }
+            current = current->next;
+        }
+    } while (swapped);
+
+    // tampilkan hasil
+    node *temp = head;
+    cout << "\n DAFTAR BARANG BERDASARKAN NAMA \n";
+    while (temp != nullptr)
+    {
+        cout << "Nama Produk: " << temp->nama
+             << "\tHarga Produk: " << temp->harga
+             << "\tStok Produk: " << temp->stok << endl;
+        temp = temp->next;
+    }
 }
 
 // 3. Tampilkan daftar barang berdasarkan nama secara descending. 45
@@ -233,7 +314,89 @@ void harga_asc()
 }
 
 // 5. Tampilkan daftar barang berdasarkan harga secara descending.
-void harga_desc() {}
+void harga_desc() 
+{
+FILE *file = fopen("databarang.txt", "r");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return;
+    }
+    // menyimpan isi file sementara untuk parsing
+    char buff[255];
+    char tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    cout << endl;
+
+    head = tail = nullptr;
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            // skip line kosong
+            fgets(buff, sizeof(buff), file);
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = nullptr;
+            newNode->prev = nullptr;
+
+            if (head == nullptr)
+            {
+                head = tail = newNode;
+            }
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+
+    fclose(file);
+    bool swapped;
+    node *current;
+
+    do
+    {
+        swapped = false;
+        current = head;
+
+        while (current != nullptr && current->next != nullptr)
+        {
+            if (current->harga < current->next->harga)
+            {
+                swap(current->nama, current->next->nama);
+                swap(current->harga, current->next->harga);
+                swap(current->stok, current->next->stok);
+                swapped = true;
+            }
+            current = current->next;
+        }
+    } while (swapped);
+
+    // tampilkan hasil
+    node *bantu = head;
+    cout << "\n DAFTAR BARANG BERDASARKAN HARGA \n";
+    while (bantu != nullptr)
+    {
+        cout << "Nama Produk: " << bantu->nama
+             << "\tHarga Produk: " << bantu->harga
+             << "\tStok Produk: " << bantu->stok << endl;
+        bantu = bantu->next;
+    }
+}
 
 // 6. Tampilkan daftar barang berdasarkan stok secara ascending. 45
 void stok_asc()
@@ -530,7 +693,92 @@ void cari_stok()
 }
 
 // 11. Edit nama produk di daftar barang
-void edit_nama_produk() {}
+void edit_nama_produk() 
+{
+     string target, namabaru;
+    bool found = false;
+    FILE *file = fopen("databarang.txt", "r");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return;
+    }
+
+    char buff[255];
+    char tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    cout << endl;
+
+    head = tail = nullptr;
+
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            fgets(buff, sizeof(buff), file); // skip kosong
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = newNode->prev = nullptr;
+
+            if (head == nullptr)
+                head = tail = newNode;
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+fclose(file);
+    // minta nama produk yang akan diedit
+    cin.ignore();
+    cout << "Masukkan nama produk yang ingin diedit: ";
+    getline(cin, target);
+
+    node *bantu = head;
+    while (bantu != nullptr)
+    {
+        if (bantu->nama == target)
+        {
+            found = true;
+            cout << "Nama produk yang baru: ";
+            getline(cin, namabaru);
+            bantu->nama = namabaru;
+            cout << "Nama produk berhasil diubah." << endl;
+            break;
+        }
+        bantu = bantu->next;
+    }
+    if (!found)
+    {
+        cout << "Produk tidak ditemukan." << endl;
+    }
+    
+   // tulis ulang file nya
+    file = fopen("databarang.txt", "w");
+    node *temp = head;
+    while (temp != nullptr)
+    {
+        fprintf(file, "Nama Produk: %s\n", temp->nama.c_str()); //pakai c_str untuk convert string ke char* kalau mau dihapus bisa diganti offstream
+        fprintf(file, "Harga Produk: %d\n", temp->harga); // kalau pakai cout data tidak tersimpan dan malah hilang
+        fprintf(file, "Stok Produk: %d\n\n", temp->stok);
+        temp = temp->next;
+    }
+    fclose(file);
+
+}
 
 // 12. Edit harga produk di daftar barang 45
 void edit_harga()
@@ -592,10 +840,204 @@ void edit_harga()
 }
 
 // 13. Edit stok produk di daftar barang
-void edit_stok() {}
+void edit_stok() 
+{
+    string target;
+   int stokbaru;
+   bool found = false;
+    FILE *file = fopen("databarang.txt", "r");
+
+    // cek apakah file bisa dibuka atau NULL
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return;
+    }
+
+    char buff[255];
+    char tempNama[255];
+    int tempHarga = 0, tempStok = 0;
+    
+
+    head = tail = nullptr;
+
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            fgets(buff, sizeof(buff), file); // skip kosong
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = newNode->prev = nullptr;
+
+            if (head == nullptr)
+                head = tail = newNode;
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+fclose(file);
+    // minta nama stok yang akan diedit
+    cin.ignore();
+    cout << "Masukkan nama barang yang ingin diedit stoknya : ";
+    getline(cin, target);
+
+    node *bantu = head;
+    while (bantu != nullptr)
+    {
+        if (bantu->nama == target)
+        {
+            cout << "Stok terkini: " << bantu->stok << endl;
+            // found = true;
+            cout << "Masukkan stok terbaru: ";
+            cin >> stokbaru;
+            bantu->stok = stokbaru;
+            cout << "Stok berhasil diubah." << endl;
+            break;
+        }
+        bantu = bantu->next;
+    }
+    
+    if (!found)
+    {
+        cout << "Produk tidak ditemukan." << endl;
+    }
+    
+   // tulis ulang file nya
+    file = fopen("databarang.txt", "w");
+    node *temp = head;
+    while (temp != nullptr)
+    {
+        fprintf(file, "Nama Produk: %s\n", temp->nama.c_str()); //pakai c_str untuk convert string ke char* kalau mau dihapus bisa diganti offstream
+        fprintf(file, "Harga Produk: %d\n", temp->harga);
+        fprintf(file, "Stok Produk: %d\n\n", temp->stok);
+        temp = temp->next;
+    }
+    fclose(file);
+ 
+}
 
 // 14. Hapus produk dari daftar barang
-void hapus_barang() {}
+void hapus_barang() 
+{
+     string target;
+    bool found = false;
+
+    FILE *file = fopen("databarang.txt", "r");
+    if (file == NULL)
+    {
+        cout << "Gagal membuka file." << endl;
+        return;
+    }
+
+    // baca semua data dari file ke linked list
+    char buff[255], tempNama[255];
+    int tempHarga, tempStok;
+    head = tail = nullptr;
+
+    while (fgets(buff, sizeof(buff), file))
+    {
+        if (sscanf(buff, "Nama Produk: %[^\n]", tempNama) == 1)
+        {
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Harga Produk: %d", &tempHarga);
+
+            fgets(buff, sizeof(buff), file);
+            sscanf(buff, "Stok Produk: %d", &tempStok);
+
+            // skip baris kosong
+            fgets(buff, sizeof(buff), file);
+
+            node *newNode = new node;
+            newNode->nama = tempNama;
+            newNode->harga = tempHarga;
+            newNode->stok = tempStok;
+            newNode->next = nullptr;
+            newNode->prev = nullptr;
+
+            if (head == nullptr)
+            {
+                head = tail = newNode;
+            }
+            else
+            {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+        }
+    }
+    fclose(file);
+
+    // input nama produk yang ingin dihapus
+    cin.ignore();
+    cout << "Masukkan nama produk yang ingin dihapus: ";
+    getline(cin, target);
+
+    // cari dan hapus node yang cocok
+    node *bantu = head;
+    while (bantu != nullptr)
+    {
+        if (bantu->nama == target)
+        {
+            found = true;
+            if (bantu == head && bantu == tail) // hanya satu node
+            {
+                head = tail = nullptr;
+            }
+            else if (bantu == head) // pakai else tidak bisa jadi bisanya if/else i
+            {
+                head = head->next;
+                head->prev = nullptr;
+            }
+            else if (bantu == tail)
+            {
+                tail = tail->prev;
+                tail->next = nullptr;
+            }
+            else
+            {
+                bantu->prev->next = bantu->next;
+                bantu->next->prev = bantu->prev;
+            }
+            delete bantu;
+            cout << "Produk berhasil dihapus.\n";
+            break;
+        }
+        bantu = bantu->next;
+    }
+
+    if (!found)
+    {
+        cout << "Produk tidak ditemukan.\n";
+        return;
+    }
+
+    // tulis ulang file
+    file = fopen("databarang.txt", "w");
+    node *temp = head;
+    while (temp != nullptr)
+    {
+        fprintf(file, "Nama Produk: %s\n", temp->nama.c_str()); // pakai c_str untuk convert string ke char* kalau mau dihapus bisa diganti offstream pas fprint di awal
+        fprintf(file, "Harga Produk: %d\n", temp->harga); // kalau pakai cout data hanya tampil tapi tidak tersimpan
+        fprintf(file, "Stok Produk: %d\n\n", temp->stok);
+        temp = temp->next;
+    }
+    fclose(file);
+}
 
 // lihat daftar
 void lihat_daftar() {}
