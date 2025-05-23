@@ -218,8 +218,7 @@ void nama_produk_asc()
     }
 }
 
-// partition untuk quicksort
-int partition(node *nodeArr[], int low, int high)
+int partitionNama(node *nodeArr[], int low, int high)
 {
     node *pivot = nodeArr[high];
     int i = low - 1;
@@ -237,18 +236,45 @@ int partition(node *nodeArr[], int low, int high)
     return i + 1;
 }
 
-// quicksort
-void quicksort(node *nodeArr[], int low, int high)
+void quicksortNama(node *nodeArr[], int low, int high)
 {
     if (low < high)
     {
-        int pivotIndex = partition(nodeArr, low, high);
-        quicksort(nodeArr, low, pivotIndex - 1);
-        quicksort(nodeArr, pivotIndex + 1, high);
+        int pivotIndex = partitionNama(nodeArr, low, high);
+        quicksortNama(nodeArr, low, pivotIndex - 1);
+        quicksortNama(nodeArr, pivotIndex + 1, high);
     }
 }
 
-// 3. Tampilkan daftar barang berdasarkan nama secara descending. 45
+int partitionHarga(node *nodeArr[], int low, int high)
+{
+    node *pivot = nodeArr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (nodeArr[j]->harga < pivot->harga)
+        {
+            i++;
+            swap(nodeArr[i], nodeArr[j]);
+        }
+    }
+
+    swap(nodeArr[i + 1], nodeArr[high]);
+    return i + 1;
+}
+
+void quicksortHarga(node *nodeArr[], int low, int high)
+{
+    if (low < high)
+    {
+        int pivotIndex = partitionHarga(nodeArr, low, high);
+        quicksortHarga(nodeArr, low, pivotIndex - 1);
+        quicksortHarga(nodeArr, pivotIndex + 1, high);
+    }
+}
+
+// 3. Tampilkan daftar barang berdasarkan nama secara descending. 45 quicksort
 node *nama_produk_desc(node *head)
 {
     FILE *file = fopen("databarang.txt", "r");
@@ -265,7 +291,6 @@ node *nama_produk_desc(node *head)
     char tempNama[255];
     int tempHarga = 0, tempStok = 0;
     cout << endl;
-    // head = tail = nullptr;
 
     while (fgets(buff, sizeof(buff), file))
     {
@@ -302,7 +327,7 @@ node *nama_produk_desc(node *head)
     fclose(file);
 
     convertListToArray(head, nodeArr, x);
-    quicksort(nodeArr, 0, x - 1);
+    quicksortNama(nodeArr, 0, x - 1);
 
     head = nodeArr[0];
     head->prev = nullptr;
@@ -383,7 +408,7 @@ node *harga_asc(node *head)
     fclose(file);
 
     convertListToArray(head, nodeArr, x);
-    quicksort(nodeArr, 0, x - 1);
+    quicksortHarga(nodeArr, 0, x - 1);
 
     head = nodeArr[0];
     head->prev = nullptr;
