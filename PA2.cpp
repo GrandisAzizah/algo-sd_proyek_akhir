@@ -40,7 +40,7 @@ void beranda()
     cout << "7. Tampilkan daftar barang berdasarkan stok secara descending." << endl;  // quick sort
     cout << "8. Cari produk berdasarkan nama." << endl;                                // sequence/linear search
     cout << "9. Cari produk berdasarkan harga." << endl;                               // binary search
-    cout << "10. Cari produk berdasarkan stok." << endl;                                // binary search
+    cout << "10. Cari produk berdasarkan stok." << endl;                               // binary search
     cout << "11. Edit nama produk di daftar barang" << endl;                           //
     cout << "12. Edit harga produk di daftar barang" << endl;                          //
     cout << "13. Edit stok produk di daftar barang" << endl;                           //
@@ -206,12 +206,13 @@ void nama_produk_asc()
         }
     } while (swapped);
 
+    const int maxnamaLength = 10;
     // tampilkan hasil
     node *temp = head;
-    cout << "\n DAFTAR BARANG BERDASARKAN NAMA \n";
+    cout << "\nDAFTAR BARANG BERDASARKAN NAMA \n";
     while (temp != nullptr)
     {
-        cout << "Nama Produk: " << temp->nama
+        cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama
              << "\tHarga Produk: " << temp->harga
              << "\tStok Produk: " << temp->stok << endl;
         temp = temp->next;
@@ -301,6 +302,7 @@ void quicksortStok(node *nodeArr[], int low, int high)
         quicksortStok(nodeArr, pivotIndex + 1, high);
     }
 }
+
 // 3. Tampilkan daftar barang berdasarkan nama secara descending. 45 quicksort
 node *nama_produk_desc(node *head)
 {
@@ -369,11 +371,12 @@ node *nama_produk_desc(node *head)
     tail = nodeArr[x - 1];
 
     // tampilkan hasil
+    const int maxnamaLength = 10;
     node *temp = head;
     cout << "Daftar barang stok desc: " << endl;
     while (temp != nullptr)
     {
-        cout << "Nama Produk: " << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
+        cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
         temp = temp->next;
         cout << endl;
     }
@@ -450,11 +453,12 @@ node *harga_asc(node *head)
     tail = nodeArr[x - 1];
 
     // tampilkan hasil
+    const int maxnamaLength = 10;
     node *temp = head;
     cout << "Daftar barang stok desc: " << endl;
     while (temp != nullptr)
     {
-        cout << "Nama Produk: " << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
+        cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
         temp = temp->next;
         cout << endl;
     }
@@ -463,9 +467,9 @@ node *harga_asc(node *head)
 }
 
 // 5. Tampilkan daftar barang berdasarkan harga secara descending.
-void harga_desc() 
+void harga_desc()
 {
-FILE *file = fopen("databarang.txt", "r");
+    FILE *file = fopen("databarang.txt", "r");
 
     // cek apakah file bisa dibuka atau NULL
     if (file == NULL)
@@ -536,11 +540,12 @@ FILE *file = fopen("databarang.txt", "r");
     } while (swapped);
 
     // tampilkan hasil
+    const int maxnamaLength = 10;
     node *bantu = head;
     cout << "\n DAFTAR BARANG BERDASARKAN HARGA \n";
     while (bantu != nullptr)
     {
-        cout << "Nama Produk: " << bantu->nama
+        cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << bantu->nama
              << "\tHarga Produk: " << bantu->harga
              << "\tStok Produk: " << bantu->stok << endl;
         bantu = bantu->next;
@@ -621,20 +626,21 @@ void stok_asc()
     } while (swapped);
 
     // tampilkan hasil
+    const int maxnamaLength = 10;
     node *temp = head;
     cout << "Daftar barang stok asc: " << endl;
     while (temp != nullptr)
     {
-        cout << "Nama Produk: " << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
+        cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
         temp = temp->next;
         cout << endl;
     }
 }
 
 // 7. Tampilkan daftar barang berdasarkan stok secara descending.
-node *stok_desc(node *head) 
+node *stok_desc(node *head)
 {
-     FILE *file = fopen("databarang.txt", "r");
+    FILE *file = fopen("databarang.txt", "r");
 
     // cek apakah file bisa dibuka atau NULL
     if (file == NULL)
@@ -699,11 +705,12 @@ node *stok_desc(node *head)
     tail = nodeArr[x - 1];
 
     // tampilkan hasil
+    const int maxnamaLength = 10;
     node *temp = head;
     cout << "Daftar barang stok desc: " << endl;
     while (temp != nullptr)
     {
-        cout << "Nama Produk: " << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
+        cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
         temp = temp->next;
         cout << endl;
     }
@@ -768,7 +775,7 @@ void cari_nama()
         }
     }
     fclose(file);
-
+    const int maxnamaLength = 10;
     bool found = false;
     node *current = head;
 
@@ -776,7 +783,7 @@ void cari_nama()
     {
         if (to_lowercase(current->nama) == to_lowercase(cari))
         {
-            cout << "Nama Produk: " << current->nama << "\tHarga Produk: " << current->harga << "\tStok Produk: " << current->stok;
+            cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << current->nama << "\tHarga Produk: " << current->harga << "\tStok Produk: " << current->stok;
             cout << endl;
             found = true;
         }
@@ -790,9 +797,9 @@ void cari_nama()
 }
 
 // 9. Cari produk berdasarkan harga
-void cari_harga() 
+void cari_harga()
 {
-     int cari;
+    int cari;
     FILE *file = fopen("databarang.txt", "r");
 
     if (file == NULL)
@@ -878,10 +885,11 @@ void cari_harga()
             low = mid + 1;
     }
 
+    const int maxnamaLength = 10;
     if (found)
     {
         cout << "Produk ditemukan:\n";
-        cout << "Nama Produk: " << nodeArr[mid]->nama
+        cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << nodeArr[mid]->nama
              << "\tHarga: " << nodeArr[mid]->harga
              << "\tStok: " << nodeArr[mid]->stok << endl;
     }
@@ -1004,9 +1012,10 @@ void cari_stok()
         }
     }
 
+    const int maxnamaLength = 10;
     if (found)
     {
-        cout << "Nama Produk: " << nodeArr[mid]->nama
+        cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << nodeArr[mid]->nama
              << "\tHarga Produk: " << nodeArr[mid]->harga
              << "\tStok Produk: " << nodeArr[mid]->stok;
         cout << endl;
@@ -1018,9 +1027,9 @@ void cari_stok()
 }
 
 // 11. Edit nama produk di daftar barang
-void edit_nama_produk() 
+void edit_nama_produk()
 {
-     string target, namabaru;
+    string target, namabaru;
     bool found = false;
     FILE *file = fopen("databarang.txt", "r");
 
@@ -1066,7 +1075,7 @@ void edit_nama_produk()
             }
         }
     }
-fclose(file);
+    fclose(file);
     // minta nama produk yang akan diedit
     cin.ignore();
     cout << "Masukkan nama produk yang ingin diedit: ";
@@ -1090,25 +1099,24 @@ fclose(file);
     {
         cout << "Produk tidak ditemukan." << endl;
     }
-    
-   // tulis ulang file nya
+
+    // tulis ulang file nya
     file = fopen("databarang.txt", "w");
     node *temp = head;
     while (temp != nullptr)
     {
-        fprintf(file, "Nama Produk: %s\n", temp->nama.c_str()); //pakai c_str untuk convert string ke char* kalau mau dihapus bisa diganti offstream
-        fprintf(file, "Harga Produk: %d\n", temp->harga); // kalau pakai cout data tidak tersimpan dan malah hilang
+        fprintf(file, "Nama Produk: %s\n", temp->nama.c_str()); // pakai c_str untuk convert string ke char* kalau mau dihapus bisa diganti offstream
+        fprintf(file, "Harga Produk: %d\n", temp->harga);       // kalau pakai cout data tidak tersimpan dan malah hilang
         fprintf(file, "Stok Produk: %d\n\n", temp->stok);
         temp = temp->next;
     }
     fclose(file);
-
 }
 
 // 12. Edit harga produk di daftar barang 45
 void edit_harga()
 {
-   string cari;
+    string cari;
     int hargaBaru;
     bool found = false;
     FILE *file = fopen("databarang.txt", "r");
@@ -1201,11 +1209,11 @@ void edit_harga()
 }
 
 // 13. Edit stok produk di daftar barang
-void edit_stok() 
+void edit_stok()
 {
     string target;
-   int stokbaru;
-   bool found = false;
+    int stokbaru;
+    bool found = false;
     FILE *file = fopen("databarang.txt", "r");
 
     // cek apakah file bisa dibuka atau NULL
@@ -1218,7 +1226,6 @@ void edit_stok()
     char buff[255];
     char tempNama[255];
     int tempHarga = 0, tempStok = 0;
-    
 
     head = tail = nullptr;
 
@@ -1250,7 +1257,7 @@ void edit_stok()
             }
         }
     }
-fclose(file);
+    fclose(file);
     // minta nama stok yang akan diedit
     cin.ignore();
     cout << "Masukkan nama barang yang ingin diedit stoknya : ";
@@ -1271,30 +1278,29 @@ fclose(file);
         }
         bantu = bantu->next;
     }
-    
+
     if (!found)
     {
         cout << "Produk tidak ditemukan." << endl;
     }
-    
-   // tulis ulang file nya
+
+    // tulis ulang file nya
     file = fopen("databarang.txt", "w");
     node *temp = head;
     while (temp != nullptr)
     {
-        fprintf(file, "Nama Produk: %s\n", temp->nama.c_str()); //pakai c_str untuk convert string ke char* kalau mau dihapus bisa diganti offstream
+        fprintf(file, "Nama Produk: %s\n", temp->nama.c_str()); // pakai c_str untuk convert string ke char* kalau mau dihapus bisa diganti offstream
         fprintf(file, "Harga Produk: %d\n", temp->harga);
         fprintf(file, "Stok Produk: %d\n\n", temp->stok);
         temp = temp->next;
     }
     fclose(file);
- 
 }
 
 // 14. Hapus produk dari daftar barang
-void hapus_barang() 
+void hapus_barang()
 {
-     string target;
+    string target;
     bool found = false;
 
     FILE *file = fopen("databarang.txt", "r");
@@ -1393,15 +1399,12 @@ void hapus_barang()
     while (temp != nullptr)
     {
         fprintf(file, "Nama Produk: %s\n", temp->nama.c_str()); // pakai c_str untuk convert string ke char* kalau mau dihapus bisa diganti offstream pas fprint di awal
-        fprintf(file, "Harga Produk: %d\n", temp->harga); // kalau pakai cout data hanya tampil tapi tidak tersimpan
+        fprintf(file, "Harga Produk: %d\n", temp->harga);       // kalau pakai cout data hanya tampil tapi tidak tersimpan
         fprintf(file, "Stok Produk: %d\n\n", temp->stok);
         temp = temp->next;
     }
     fclose(file);
 }
-
-// lihat daftar
-void lihat_daftar() {}
 
 int main()
 {
