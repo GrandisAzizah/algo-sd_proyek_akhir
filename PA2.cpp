@@ -373,7 +373,7 @@ node *nama_produk_desc(node *head)
     // tampilkan hasil
     const int maxnamaLength = 10;
     node *temp = head;
-    cout << "Daftar barang stok desc: " << endl;
+    cout << "DAFTAR BARANG BERDASARKAN NAMA: " << endl;
     while (temp != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
@@ -455,7 +455,7 @@ node *harga_asc(node *head)
     // tampilkan hasil
     const int maxnamaLength = 10;
     node *temp = head;
-    cout << "Daftar barang stok desc: " << endl;
+    cout << "DAFTAR BARANG BERDASARKAN HARGA: " << endl;
     while (temp != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
@@ -707,7 +707,7 @@ node *stok_desc(node *head)
     // tampilkan hasil
     const int maxnamaLength = 10;
     node *temp = head;
-    cout << "Daftar barang stok desc: " << endl;
+    cout << "DAFTAR BARANG BERDASARKAN STOK: " << endl;
     while (temp != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
