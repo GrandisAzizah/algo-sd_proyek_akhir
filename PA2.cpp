@@ -209,13 +209,21 @@ void nama_produk_asc()
     const int maxnamaLength = 10;
     // tampilkan hasil
     node *temp = head;
-    cout << "\nDAFTAR BARANG BERDASARKAN NAMA \n";
+    cout << "\nDAFTAR BARANG BERDASARKAN NAMA SECARA ASCENDING: \n";
     while (temp != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama
              << "\tHarga Produk: " << temp->harga
              << "\tStok Produk: " << temp->stok << endl;
         temp = temp->next;
+    }
+
+    temp = head;
+    while (temp != nullptr)
+    {
+        node *toDelete = temp;
+        temp = temp->next;
+        delete toDelete;
     }
 }
 
@@ -320,6 +328,7 @@ node *nama_produk_desc(node *head)
     char tempNama[255];
     int tempHarga = 0, tempStok = 0;
     cout << endl;
+    head = tail = nullptr;
 
     while (fgets(buff, sizeof(buff), file))
     {
@@ -332,7 +341,8 @@ node *nama_produk_desc(node *head)
             sscanf(buff, "Stok Produk: %d", &tempStok);
 
             // skip line kosong
-            fgets(buff, sizeof(buff), file);
+            // fgets(buff, sizeof(buff), file);
+            // lanjut membaca data selanjutnya, line kosong tidak di skip
 
             node *newNode = new node;
             newNode->nama = tempNama;
@@ -373,7 +383,7 @@ node *nama_produk_desc(node *head)
     // tampilkan hasil
     const int maxnamaLength = 10;
     node *temp = head;
-    cout << "DAFTAR BARANG BERDASARKAN NAMA: " << endl;
+    cout << "DAFTAR BARANG BERDASARKAN NAMA SECARA DESCENDING: " << endl;
     while (temp != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
@@ -382,6 +392,16 @@ node *nama_produk_desc(node *head)
     }
 
     return head;
+
+    // bersihkan alokasi node
+    temp = head;
+    while (temp != nullptr)
+    {
+        node *toDelete = temp;
+        temp = temp->next;
+        delete toDelete;
+    }
+    head = tail = nullptr;
 }
 
 // 4. Tampilkan daftar barang berdasarkan harga secara ascending. 45 quicksort
@@ -455,7 +475,7 @@ node *harga_asc(node *head)
     // tampilkan hasil
     const int maxnamaLength = 10;
     node *temp = head;
-    cout << "DAFTAR BARANG BERDASARKAN HARGA: " << endl;
+    cout << "DAFTAR BARANG BERDASARKAN HARGA SECARA ASCENDING: " << endl;
     while (temp != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
@@ -464,6 +484,16 @@ node *harga_asc(node *head)
     }
 
     return head;
+
+    // bersihkan alokasi node
+    temp = head;
+    while (temp != nullptr)
+    {
+        node *toDelete = temp;
+        temp = temp->next;
+        delete toDelete;
+    }
+    head = tail = nullptr;
 }
 
 // 5. Tampilkan daftar barang berdasarkan harga secara descending.
@@ -542,7 +572,7 @@ void harga_desc()
     // tampilkan hasil
     const int maxnamaLength = 10;
     node *bantu = head;
-    cout << "\n DAFTAR BARANG BERDASARKAN HARGA \n";
+    cout << "\nDAFTAR BARANG BERDASARKAN HARGA SECARA DESCENDING \n";
     while (bantu != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << bantu->nama
@@ -550,6 +580,16 @@ void harga_desc()
              << "\tStok Produk: " << bantu->stok << endl;
         bantu = bantu->next;
     }
+
+    // bersihkan alokasi node
+    bantu = head;
+    while (bantu != nullptr)
+    {
+        node *toDelete = bantu;
+        bantu = bantu->next;
+        delete toDelete;
+    }
+    head = tail = nullptr;
 }
 
 // 6. Tampilkan daftar barang berdasarkan stok secara ascending. 45
@@ -628,13 +668,23 @@ void stok_asc()
     // tampilkan hasil
     const int maxnamaLength = 10;
     node *temp = head;
-    cout << "Daftar barang stok asc: " << endl;
+    cout << "DAFTAR BARANG BERDASARKAN STOK SECARA ASCENDING: " << endl;
     while (temp != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
         temp = temp->next;
         cout << endl;
     }
+
+    // bersihkan alokasi node
+    temp = head;
+    while (temp != nullptr)
+    {
+        node *toDelete = temp;
+        temp = temp->next;
+        delete toDelete;
+    }
+    head = tail = nullptr;
 }
 
 // 7. Tampilkan daftar barang berdasarkan stok secara descending.
@@ -707,7 +757,7 @@ node *stok_desc(node *head)
     // tampilkan hasil
     const int maxnamaLength = 10;
     node *temp = head;
-    cout << "DAFTAR BARANG BERDASARKAN STOK: " << endl;
+    cout << "DAFTAR BERDASARKAN STOK SECARA DESCENDING: " << endl;
     while (temp != nullptr)
     {
         cout << "Nama Produk: " << left << setfill(' ') << setw(maxnamaLength) << temp->nama << "\tHarga Produk: " << temp->harga << "\tStok Produk: " << temp->stok;
@@ -716,6 +766,16 @@ node *stok_desc(node *head)
     }
 
     return head;
+
+    //  bersihkan alokasi node
+    temp = head;
+    while (temp != nullptr)
+    {
+        node *toDelete = temp;
+        temp = temp->next;
+        delete toDelete;
+    }
+    head = tail = nullptr;
 }
 
 // 8. Cari produk berdasarkan nama 45
